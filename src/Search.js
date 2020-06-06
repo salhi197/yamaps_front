@@ -32,10 +32,9 @@ class Search extends Component {
     this.makeApiCall(this.state.searchValue);
 
   };
-
   handleCityClick = event => {
 //    var scoreUrl = 'http:///localhost:3002/api/score';
-    var getCityUrl = 'http:///localhost:3002/place/details';
+    var getCityUrl = 'http:///35.205.193.128/place/details';
     console.log(event.target)
     this.setState({
       coordinates:[event.target.getAttribute('lon'),event.target.getAttribute('lat')],
@@ -70,7 +69,7 @@ class Search extends Component {
   makeApiCall = searchInput => {
 
     if(searchInput.length > 0){
-      var searchUrl = 'http://'+process.env.REACT_APP_API_HOST+':'+process.env.REACT_APP_API_PORT+'/v1/api';
+      var searchUrl = 'http://35.205.193.128/v1/api';
       fetch(searchUrl,{
         method: 'POST',
         headers: {
