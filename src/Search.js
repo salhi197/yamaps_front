@@ -7,6 +7,7 @@ class Search extends Component {
     super(props);
     this.state = {
       searchValue: "",
+      country: "algérie",
       usedMethod:"none",
       cities: [],
       coordinates:[
@@ -27,23 +28,21 @@ class Search extends Component {
 
 
 
-  handleOnChange = event => {
-    this.setState({ searchValue: event.target.value });
-    this.makeApiCall(this.state.searchValue);
+handleOnChange = event => {
+  // this.setState({ searchValue: event.target.value });
+  this.setState ({
+    [event.target.name]: event.target.value,
+  })
+  this.makeApiCall(this.state.searchValue ,this.state.country);
+};
 
-  };
-  handleCityClick = event => {
-//    var scoreUrl = 'http:///localhost:3002/api/score';
-    var getCityUrl = 'http:///35.205.193.128/place/details';
+handleCityClick = event => {
+    var getCityUrl = 'http:///localhost:3002/place/details';
     console.log(event.target)
     this.setState({
       coordinates:[event.target.getAttribute('lon'),event.target.getAttribute('lat')],
       cities:[]    
     })
-    /**
-     * fucntion to increment 
-     */
-    
     fetch(getCityUrl,{
       method: 'POST',
       headers: {
@@ -62,30 +61,33 @@ class Search extends Component {
     this.setState({ city: jsonData.city.result });
 
   });
+};
 
-  };
 
-
-  makeApiCall = searchInput => {
-
-    if(searchInput.length > 0){
-      var searchUrl = 'http://35.205.193.128/v1/api';
-      fetch(searchUrl,{
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },      
-        body: JSON.stringify({input: searchInput, b: 'Textual content'})
-    })
-    .then(response => {
-        return response.json();
+makeApiCall = (searchInput,country) => {
+  if(searchInput.length > 0){
+    var searchUrl = 'http://'+process.env.REACT_APP_API_HOST+':'+process.env.REACT_APP_API_PORT+'/v1/api';
+    fetch(searchUrl,{ 
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          },      
+      body: JSON.stringify(
+        {input: searchInput,
+        country: country,
+        lat:this.state.coordinates[0],
+        lon:this.state.coordinates[1],
       })
-      .then(jsonData => {
-        console.log(jsonData.predictions)
-         this.setState({ cities: jsonData.predictions, });
-      });
-    }
+  })
+  .then(response => {
+      return response.json();
+    })
+    .then(jsonData => {
+      console.log(jsonData.predictions)
+        this.setState({ cities: jsonData.predictions, });
+    });
+  }
 };
 
 
@@ -99,10 +101,20 @@ class Search extends Component {
                                         <input
                                                 className="search form-control"
                                                   type="text"
+                                                  name="searchValue"
                                                   placeholder="Search"
                                                   onChange={event => this.handleOnChange(event)}
                                                   value={this.state.searchValue}
                                         />
+                                        <input
+                                                className="search form-control"
+                                                  type="text"
+                                                  name="country"
+                                                  placeholder="Search"
+                                                  onChange={event => this.handleOnChange(event)}
+                                                  value={this.state.country}
+                                        />
+                                                                                
                                         <p className="list-group-item"> Used Method : 
                                           <span>
                                             {this.state.usedMethod}
