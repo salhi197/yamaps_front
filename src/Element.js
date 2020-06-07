@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup,Circle } from "react-leaflet"
 
-
 class Element extends Component {
 
     render() {

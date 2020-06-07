@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup,Circle } from "react-leaflet"
+import Element from './Element'
+
 
 
 class Search extends Component {
@@ -128,6 +130,57 @@ makeApiCall = (searchInput,country) => {
                                                       <Element city/>
                                                     ))}
                                                 </ul>
+                                                     
+                                            <div className="col-md-12">
+                                                <div className="profile-sidebar">
+                                                  <div className="profile-userpic">
+                                                  </div>
+                                                  <div className="profile-usertitle">
+                                                    <div className="profile-usertitle-name">
+                                                    {this.state.city.wilaya }
+                                                    </div>
+                                                    <div className="profile-usertitle-job">
+                                                    {this.state.city.formatted_address}
+                                                    </div>
+                                                  </div>
+                                                  <div className="profile-userbuttons">
+                                                    <button type="button" className="btn btn-success btn-sm">Itinéraires</button>
+                                                  </div>
+                                                  <div className="profile-usermenu">
+                                                    <ul className="nav">
+                                                      <li className="active">
+                                                        <a>
+                                                        _id :{this.state.city.place_id} </a>
+                                                      </li> 
+                                                      <li>
+                                                        <a>
+                                                        NameFr : {this.state.city.name} </a>
+                                                      </li>
+                                                      <li>
+                                                        <a  target="_blank">
+                                                        	wilaya :city.wilaya </a>
+                                                      </li>
+                                                      <li>
+                                                        <a>
+                                                        Commune : city.commune</a>
+                                                      </li>
+                                                      <li>
+                                                        <a>
+                                                        Context : city.Context</a>
+                                                      </li>
+                                                      <li>
+                                                        <a>
+                                                        Nombre Click : city.nbclick</a>
+                                                      </li>
+                                                      <li>
+                                                        <a>
+                                                        Score : this.state.city.score:</a>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
                                              ) : (
                                             <p>Try searching for a meal</p>
                                         )}
