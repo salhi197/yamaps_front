@@ -1,10 +1,9 @@
 <p align="center"><img src="public/img/cover.png"></p>
 
 <p align="center">
-<a href="https://packagist.org/packages/laravel/framework">1.0.0</a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 Real-time Search Engine with Node.js, react.js and Elasticsearch
+
+</p>
 
 ## Getting Started
 - Clone this repo 
