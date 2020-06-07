@@ -1,7 +1,8 @@
 <p align="center"><img src="public/img/cover.png"></p>
 
 <p align="center">
-Real-time Search Engine with Node.js, react.js and Elasticsearch
+Real-time Search Engine with <a href="https://nodejs.org/en/">NodeJS</a>, <a href="https://fr.reactjs.org/">ReactJS</a>
+ and <a href="https://www.elastic.co/fr/">Elasticsearch</a>
 
 </p>
 
