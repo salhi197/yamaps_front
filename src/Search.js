@@ -18,13 +18,13 @@ class Search extends Component {
   }
   
 
-    componentDidMount(){
-      navigator.geolocation.getCurrentPosition(location => {
-        this.setState({
-          coordinates:[location.coords.latitude,location.coords.longitude]
-        })
-      });  
-  }
+componentDidMount(){
+  navigator.geolocation.getCurrentPosition(location => {
+    this.setState({
+      coordinates:[location.coords.latitude,location.coords.longitude]
+    })
+  });  
+}
 
 
 
@@ -37,7 +37,7 @@ handleOnChange = event => {
 };
 
 handleCityClick = event => {
-    var getCityUrl = 'http:///localhost:3002/place/details';
+    var getCityUrl = 'http:///'+process.env.REACT_APP_API_HOST+':'+process.env.REACT_APP_API_PORT+'/place/details';
     console.log(event.target)
     this.setState({
       coordinates:[event.target.getAttribute('lon'),event.target.getAttribute('lat')],
@@ -125,87 +125,9 @@ makeApiCall = (searchInput,country) => {
                                             <div className="ul-container">
                                                 <ul className="list-group">
                                                     {this.state.cities.map((city, index) => (
-                                                        <li  className="list-group-item"  key={index}>
-                                                            <div className="row" key={index}>
-                                                                <div className="element" key={index}>
-                                                                    <div key={index}>
-                                                                        <p
-                                                                            lat={city.structured_formatting.location.lat}
-                                                                            lon={city.structured_formatting.location.lon}
-                                                                            key={index}
-                                                                            _id={city.place_id}
-                                                                            score={city.structured_formatting['score']}
-                                                                            nbclick={city.structured_formatting['nbClick']}
-
-                                                                            onClick={this.handleCityClick}
-                                                                        >
-                                                                            <i
-                                                                                className='fas fa-map-marker-alt'></i>
-                                                                            &nbsp;
-                                                                            {city.description}
-                                                                            <br></br>
-                                                                              <small>
-                                                                                {city.structured_formatting.location.lat} - {city.structured_formatting.location.lon} 
-                                                                                - id : {city.place_id } - method : {city.method}                                                                             
-                                                                              </small>                                                                            
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
+                                                      <Element city/>
                                                     ))}
                                                 </ul>
-                                                     
-                                            <div className="col-md-12">
-                                                <div className="profile-sidebar">
-                                                  <div className="profile-userpic">
-                                                  </div>
-                                                  <div className="profile-usertitle">
-                                                    <div className="profile-usertitle-name">
-                                                    {this.state.city.wilaya }
-                                                    </div>
-                                                    <div className="profile-usertitle-job">
-                                                    {this.state.city.formatted_address}
-                                                    </div>
-                                                  </div>
-                                                  <div className="profile-userbuttons">
-                                                    <button type="button" className="btn btn-success btn-sm">Itinéraires</button>
-                                                  </div>
-                                                  <div className="profile-usermenu">
-                                                    <ul className="nav">
-                                                      <li className="active">
-                                                        <a>
-                                                        _id :{this.state.city.place_id} </a>
-                                                      </li> 
-                                                      <li>
-                                                        <a>
-                                                        NameFr : {this.state.city.name} </a>
-                                                      </li>
-                                                      <li>
-                                                        <a  target="_blank">
-                                                        	wilaya :city.wilaya </a>
-                                                      </li>
-                                                      <li>
-                                                        <a>
-                                                        Commune : city.commune</a>
-                                                      </li>
-                                                      <li>
-                                                        <a>
-                                                        Context : city.Context</a>
-                                                      </li>
-                                                      <li>
-                                                        <a>
-                                                        Nombre Click : city.nbclick</a>
-                                                      </li>
-                                                      <li>
-                                                        <a>
-                                                        Score : this.state.city.score:</a>
-                                                      </li>
-                                                    </ul>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
                                              ) : (
                                             <p>Try searching for a meal</p>
                                         )}
