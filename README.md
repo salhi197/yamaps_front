@@ -1,4 +1,4 @@
-<p align="center"><img src="public/img/cover.png"></p>
+<p align="center"><img src="public/img/cover-1.png"></p>
 
 <p align="center">
 Real-time Search Engine with <a href="https://nodejs.org/en/">NodeJS</a>, <a href="https://fr.reactjs.org/">ReactJS</a>
