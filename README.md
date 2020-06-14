@@ -14,7 +14,7 @@ git clone https://github.com/YAtechnologies/yamaps_front_demo.git
 ```
 
 
-- change directory into the newly cloned repo
+- change directory into the newly cloned repo .
 ```
 cd yamaps_front_demo
 ```
