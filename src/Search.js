@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup,Circle } from "react-leaflet"
-import Element from './Element'
-
 
 
 class Search extends Component {
@@ -9,7 +7,6 @@ class Search extends Component {
     super(props);
     this.state = {
       searchValue: "",
-      country: "algérie",
       usedMethod:"none",
       cities: [],
       coordinates:[
@@ -20,31 +17,36 @@ class Search extends Component {
   }
   
 
-componentDidMount(){
-  navigator.geolocation.getCurrentPosition(location => {
-    this.setState({
-      coordinates:[location.coords.latitude,location.coords.longitude]
-    })
-  });  
-}
+    componentDidMount(){
+      navigator.geolocation.getCurrentPosition(location => {
+        this.setState({
+          coordinates:[location.coords.latitude,location.coords.longitude]
+        })
+      });  
+  }
 
 
 
-handleOnChange = event => {
-  // this.setState({ searchValue: event.target.value });
-  this.setState ({
-    [event.target.name]: event.target.value,
-  })
-  this.makeApiCall(this.state.searchValue ,this.state.country);
-};
+  handleOnChange = event => {
+    this.setState({ searchValue: event.target.value },()=>{
+        if(this.state.searchValue.length == 0){
+          console.log(this.state.searchValue.length)
+          this.setState({ cities: [] })
+        }else{
+          this.makeApiCall(this.state.searchValue);
+        }
+    });
+  };
 
-handleCityClick = event => {
-    var getCityUrl = 'http:///'+process.env.REACT_APP_API_HOST+':'+process.env.REACT_APP_API_PORT+'/place/details';
+  handleCityClick = event => {
+    var getCityUrl = 'http:///35.205.193.128/place/details';
     console.log(event.target)
     this.setState({
-      coordinates:[event.target.getAttribute('lon'),event.target.getAttribute('lat')],
-      cities:[]    
+      coordinates:[event.target.getAttribute('lat'),event.target.getAttribute('lon')],
+      cities:[],
+      searchValue:event.target.getAttribute('formatted_address')
     })
+    
     fetch(getCityUrl,{
       method: 'POST',
       headers: {
@@ -63,33 +65,30 @@ handleCityClick = event => {
     this.setState({ city: jsonData.city.result });
 
   });
-};
+
+  };
 
 
-makeApiCall = (searchInput,country) => {
-  if(searchInput.length > 0){
-    var searchUrl = 'http://'+process.env.REACT_APP_API_HOST+':'+process.env.REACT_APP_API_PORT+'/v1/api';
-    fetch(searchUrl,{ 
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-          },      
-      body: JSON.stringify(
-        {input: searchInput,
-        country: country,
-        lat:this.state.coordinates[0],
-        lon:this.state.coordinates[1],
-      })
-  })
-  .then(response => {
-      return response.json();
+  makeApiCall = searchInput => {
+
+    if(searchInput.length > 0){
+      var searchUrl = 'http://35.205.193.128/v1/api';
+      fetch(searchUrl,{
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },      
+        body: JSON.stringify({input: searchInput, b: 'Textual content'})
     })
-    .then(jsonData => {
-      console.log(jsonData.predictions)
-        this.setState({ cities: jsonData.predictions, });
-    });
-  }
+    .then(response => {
+        return response.json();
+      })
+      .then(jsonData => {
+        console.log(jsonData.predictions)
+         this.setState({ cities: jsonData.predictions, });
+      });
+    }
 };
 
 
@@ -103,20 +102,10 @@ makeApiCall = (searchInput,country) => {
                                         <input
                                                 className="search form-control"
                                                   type="text"
-                                                  name="searchValue"
                                                   placeholder="Search"
                                                   onChange={event => this.handleOnChange(event)}
                                                   value={this.state.searchValue}
                                         />
-                                        <input
-                                                className="search form-control"
-                                                  type="text"
-                                                  name="country"
-                                                  placeholder="Search"
-                                                  onChange={event => this.handleOnChange(event)}
-                                                  value={this.state.country}
-                                        />
-                                                                                
                                         <p className="list-group-item"> Used Method : 
                                           <span>
                                             {this.state.usedMethod}
@@ -127,7 +116,35 @@ makeApiCall = (searchInput,country) => {
                                             <div className="ul-container">
                                                 <ul className="list-group">
                                                     {this.state.cities.map((city, index) => (
-                                                      <Element city/>
+                                                        <li  className="list-group-item"  key={index}>
+                                                            <div className="row" key={index}>
+                                                                <div className="element" key={index}>
+                                                                    <div key={index}>
+                                                                        <p
+                                                                            lat={city.structured_formatting.location.lat}
+                                                                            lon={city.structured_formatting.location.lon}
+                                                                            key={index}
+                                                                            formatted_address={city.description}
+                                                                            _id={city.place_id}
+                                                                            score={city.structured_formatting['score']}
+                                                                            nbclick={city.structured_formatting['nbClick']}
+
+                                                                            onClick={this.handleCityClick}
+                                                                        >
+                                                                            <i
+                                                                                className='fas fa-map-marker-alt'></i>
+                                                                            &nbsp;
+                                                                            {city.description}
+                                                                            <br></br>
+                                                                              <small>
+                                                                                {city.structured_formatting.location.lat} - {city.structured_formatting.location.lon} 
+                                                                                - id : {city.place_id } - method : {city.method}                                                                             
+                                                                              </small>                                                                            
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
                                                     ))}
                                                 </ul>
                                                      
