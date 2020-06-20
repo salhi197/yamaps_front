@@ -12,7 +12,7 @@ class Search extends Component {
       coordinates:[
         -1.4277291 ,35.059692
       ],
-      city:[]
+      city:null
       };  
   }
   
@@ -106,12 +106,12 @@ class Search extends Component {
                                                   onChange={event => this.handleOnChange(event)}
                                                   value={this.state.searchValue}
                                         />
-                                        <p className="list-group-item"> Used Method : 
+                                        {/* <p className="list-group-item"> Used Method : 
                                           <span>
                                             {this.state.usedMethod}
                                           </span>
                                           
-                                        </p>
+                                        </p> */}
                                         {this.state.cities ? (
                                             <div className="ul-container">
                                                 <ul className="list-group">
@@ -147,7 +147,7 @@ class Search extends Component {
                                                         </li>
                                                     ))}
                                                 </ul>
-                                                     
+                                          {this.state.city && (
                                             <div className="col-md-12">
                                                 <div className="profile-sidebar">
                                                   <div className="profile-userpic">
@@ -197,6 +197,7 @@ class Search extends Component {
                                                   </div>
                                                 </div>
                                               </div>
+                                              )}
                                             </div>
                                              ) : (
                                             <p>Try searching for a meal</p>
